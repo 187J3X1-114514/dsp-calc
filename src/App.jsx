@@ -109,17 +109,10 @@ function GameVersion({needs_list, set_needs_list}) {
     return <div style={{display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap'}}>
         <div style={{whiteSpace: 'nowrap'}}>游戏版本 v{vanilla_game_version}</div>
         <div style={{whiteSpace: 'nowrap'}}>模组选择</div>
-        <mdui-select multiple style={{minWidth: '250px'}} value={JSON.stringify(mods)} 
+        <mdui-select multiple style={{minWidth: '250px'}} value={mods} 
             onchange={(e) => {
-                try {
-                    const selectedMods = JSON.parse(e.target.value || '[]');
-                    mods_change(selectedMods);
-                } catch {
-                    // Fallback for older format
-                    const value = e.target.value;
-                    const selectedMods = value ? value.split(' ').filter(v => v) : [];
-                    mods_change(selectedMods);
-                }
+                const selectedMods = e.target.value || [];
+                mods_change(Array.isArray(selectedMods) ? selectedMods : []);
             }}>
             {mod_options.map(opt => (
                 <mdui-menu-item key={opt.value} value={opt.value}>{opt.label}</mdui-menu-item>
