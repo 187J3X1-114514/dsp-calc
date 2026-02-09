@@ -1,9 +1,15 @@
 import structuredClone from '@ungap/structured-clone';
 import {useContext, useEffect, useRef, useState} from 'react';
-import {Trash} from 'react-bootstrap-icons';
+import {FaTrash} from 'react-icons/fa';
 import {GameInfoContext, GlobalStateContext, SettingsSetterContext} from './contexts';
 import {ItemIcon} from './icon';
 import {ItemSelect} from './item_select';
+import 'mdui/components/button.js';
+import 'mdui/components/text-field.js';
+import 'mdui/components/dropdown.js';
+import 'mdui/components/menu.js';
+import 'mdui/components/menu-item.js';
+import 'mdui/components/button-icon.js';
 
 function get_item_data(game_data) {
     //通过读取配方表得到配方中涉及的物品信息，item_data中的键名为物品名，键值为
@@ -42,14 +48,14 @@ export function NeedsList({needs_list, set_needs_list}) {
             set_needs_list(new_needs_list);
         }
 
-        return <div key={item} className="d-inline-flex align-items-center">
+        return <div key={item} style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
             <ItemIcon item={item}/>
-            <span className="ms-1 me-2">x</span>
-            <div key={item} className="input-group input-group-sm w-fit d-inline-flex">
-                <input type="text" className="form-control" style={{width: "6em"}} value={count} onChange={edit_count}/>
-                <button className="btn btn-outline-danger d-inline-flex align-items-center" onClick={remove}>
-                    <Trash/>
-                </button>
+            <span style={{margin: '0 4px'}}>x</span>
+            <div style={{display: 'inline-flex', alignItems: 'center'}}>
+                <input type="text" style={{width: '6em', padding: '4px 8px', border: '1px solid var(--mdui-color-outline)', borderRadius: '4px'}} value={count} onChange={edit_count}/>
+                <mdui-button-icon onClick={remove} style={{color: 'var(--mdui-color-error)'}}>
+                    <FaTrash/>
+                </mdui-button-icon>
             </div>
         </div>
     });
@@ -79,21 +85,21 @@ export function NeedsList({needs_list, set_needs_list}) {
     const is_min = global_state.settings.is_time_unit_minute;
 
     return <>
-        <div className="w-fit mt-3 d-flex align-items-center row-gap-1 flex-wrap">
-            <small className="me-3 fw-bold text-nowrap">添加需求</small>
-            <div className="input-group input-group-sm w-fit d-inline-flex me-5">
-                <input type="text" className="form-control" style={{width: "6em"}} ref={count_ref} defaultValue={60}/>
-                <span className="input-group-text">/{is_min ? "min" : "sec"}</span>
-                <button className="btn btn-sm btn-outline-danger text-nowrap"
-                        onClick={() => set_needs_list({})}>清空需求
-                </button>
+        <div style={{width: 'fit-content', marginTop: '16px', display: 'flex', alignItems: 'center', rowGap: '4px', flexWrap: 'wrap', gap: '8px'}}>
+            <small style={{marginRight: '16px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>添加需求</small>
+            <div style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
+                <input type="text" style={{width: '6em', padding: '4px 8px', border: '1px solid var(--mdui-color-outline)', borderRadius: '4px'}} ref={count_ref} defaultValue={60}/>
+                <span style={{padding: '0 4px', color: 'var(--mdui-color-on-surface-variant)'}}>/{is_min ? "min" : "sec"}</span>
+                <mdui-button variant="outlined" onClick={() => set_needs_list({})} style={{'--mdui-color-primary': 'var(--mdui-color-error)', whiteSpace: 'nowrap'}}>
+                    清空需求
+                </mdui-button>
                 <ItemSelect text="添加需求物品" set_item={add_need}/>
                 <ItemSelect text="添加现有产线" set_item={add_npl}
-                            btn_class="btn btn-sm btn-outline-success text-nowrap"/>
+                            btn_class="mdui-success"/>
             </div>
 
             {Object.keys(needs_list).length == 0 ||
-                <div className="d-inline-flex flex-wrap gap-4 row-gap-0 align-items-center flex-grow-1">
+                <div style={{display: 'inline-flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', flexGrow: 1}}>
                     {needs_doms}
                 </div>
             }
@@ -158,29 +164,25 @@ export function NeedsListStorage({needs_list, set_needs_list}) {
     }//保存生产策略
 
     let dd_load_list = Object.keys(all_scheme).map(scheme_name => (
-        <li key={scheme_name}>
-            <a className="dropdown-item cursor-pointer"
-               onClick={() => load(scheme_name)}>{scheme_name}</a>
-        </li>));
+        <mdui-menu-item key={scheme_name} onClick={() => load(scheme_name)}>{scheme_name}</mdui-menu-item>
+    ));
 
     let dd_delete_list = Object.keys(all_scheme).map(scheme_name => (
-        <li key={scheme_name}>
-            <a className="dropdown-item cursor-pointer"
-               onClick={() => delete_(scheme_name)}>{scheme_name}</a>
-        </li>));
+        <mdui-menu-item key={scheme_name} onClick={() => delete_(scheme_name)}>{scheme_name}</mdui-menu-item>
+    ));
 
-    return <div className="d-flex gap-2 align-items-center">
-        <div className="text-nowrap">需求列表</div>
-        <div className="input-group input-group-sm">
-            <button className="btn btn-outline-secondary" type="button" onClick={save}>保存</button>
-            <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">加载
-            </button>
-            <ul className="dropdown-menu">{dd_load_list}</ul>
-            <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">删除
-            </button>
-            <ul className="dropdown-menu">{dd_delete_list}</ul>
+    return <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+        <div style={{whiteSpace: 'nowrap'}}>需求列表</div>
+        <div style={{display: 'flex', gap: '4px'}}>
+            <mdui-button variant="outlined" onClick={save}>保存</mdui-button>
+            <mdui-dropdown>
+                <mdui-button slot="trigger" variant="outlined">加载</mdui-button>
+                <mdui-menu>{dd_load_list}</mdui-menu>
+            </mdui-dropdown>
+            <mdui-dropdown>
+                <mdui-button slot="trigger" variant="outlined">删除</mdui-button>
+                <mdui-menu>{dd_delete_list}</mdui-menu>
+            </mdui-dropdown>
         </div>
     </div>;
 }

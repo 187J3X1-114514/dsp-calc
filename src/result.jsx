@@ -5,6 +5,7 @@ import {ItemIcon} from './icon';
 import {NplRows} from './natural_production_line';
 import {HorizontalMultiButtonSelect, Recipe} from './recipe';
 import {AutoSizedInput} from './ui_components/auto_sized_input.jsx';
+import 'mdui/components/button.js';
 
 const ValueWithDifference = ({currentValue, previousValue}) => {
     const global_state = useContext(GlobalStateContext);
@@ -42,15 +43,16 @@ export function RecipeSelect({item, choice, onChange}) {
     if (item_data[item].length == 2) {
         let recipe_index = item_data[item][1];
         let recipe = game_data.recipe_data[recipe_index];
-        return <div className="my-1 px-2 py-1"><Recipe recipe={recipe}/></div>
+        return <div style={{margin: '4px 0', padding: '4px 8px'}}><Recipe recipe={recipe}/></div>
     } else {
         let doms = [];
         for (let i = 1; i < item_data[item].length; i++) {
             let recipe_index = item_data[item][i];
             let recipe = game_data.recipe_data[recipe_index];
-            let bg_class = (i == choice) ? "selected" : "";
+            let bgStyle = (i == choice) ? {backgroundColor: '#60a363', color: 'white'} : {};
             doms.push(<a key={i}
-                         className={`recipe-item px-2 py-1 d-block text-decoration-none text-reset cursor-pointer ${bg_class}`}
+                         className="recipe-item"
+                         style={{padding: '4px 8px', display: 'block', textDecoration: 'none', color: 'inherit', cursor: 'pointer', ...bgStyle}}
                          onClick={() => onChange(i)}>
                 <Recipe recipe={recipe}/>
             </a>);
@@ -278,7 +280,7 @@ export function Result({needs_list, set_needs_list}) {
     }
 
     let mineralize_doms = Object.keys(mineralize_list).map(item => (
-        <a key={item} className="m-1 cursor-pointer" onClick={() => unmineralize(item)}><ItemIcon item={item}/></a>
+        <a key={item} style={{margin: '4px', cursor: 'pointer'}} onClick={() => unmineralize(item)}><ItemIcon item={item}/></a>
     ));
 
     let result_table_rows = [];
@@ -292,7 +294,7 @@ export function Result({needs_list, set_needs_list}) {
         }
         let factory_number = get_factory_number(result_dict[i], i);
         let from_side_products = Object.entries(side_products[i]).map(([from, amount]) =>
-            <div key={from} className="text-nowrap">+{amount.toFixed(fixed_num)} (<ItemIcon item={from} size={26}/>)
+            <div key={from} style={{whiteSpace: 'nowrap'}}>+{amount.toFixed(fixed_num)} (<ItemIcon item={from} size={26}/>)
             </div>
         );
         let factory_name = game_data.factory_data[game_data.recipe_data[recipe_id]["设施"]][scheme_data.scheme_for_recipe[recipe_id]["建筑"]]["名称"];
@@ -361,32 +363,31 @@ export function Result({needs_list, set_needs_list}) {
             {/* 操作 */}
             <td>
                 {is_mineralized ?
-                    <button className="btn btn-sm btn-outline-primary ssmall text-nowrap mineralize-btn"
-                            onClick={() => unmineralize(i)}>恢复</button> :
-                    <button className="btn btn-sm btn-outline-primary ssmall text-nowrap mineralize-btn"
+                    <mdui-button variant="text" style={{fontSize: '0.75em', padding: '0.1em 0.4em', margin: '0 0.25em', whiteSpace: 'nowrap'}}
+                            onClick={() => unmineralize(i)}>恢复</mdui-button> :
+                    <mdui-button variant="text" style={{fontSize: '0.75em', padding: '0.1em 0.4em', margin: '0 0.25em', whiteSpace: 'nowrap'}}
                             onClick={() => mineralize(i)}>
-                        <div>视为</div>
-                        <div>原矿</div>
-                    </button>
+                        <div>视为原矿</div>
+                    </mdui-button>
                 }
             </td>
             {/* 目标物品 */}
             <td>
-                <div className="d-flex align-items-center text-nowrap">
+                <div style={{display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
                     <ItemIcon item={i} tooltip={false}/>
-                    <small className="ms-1">{i}</small>
+                    <small style={{marginLeft: '4px'}}>{i}</small>
                 </div>
             </td>
             {/* 分钟毛产出 */}
-            <td className="text-center">
+            <td style={{textAlign: 'center'}}>
                 <RatioAdjustInput value={get_gross_output(result_dict[i], i)}/>
                 {from_side_products}
             </td>
             {/* 所需工厂*数目 */}
-            <td className="text-nowrap">
+            <td style={{whiteSpace: 'nowrap'}}>
                 {is_mineralized ||
                     <>
-                        <div className="d-inline-flex align-items-center gap-1">
+                        <div style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
                             <ItemIcon item={factory_name} size={30}/>
                             <RatioAdjustInput value={factory_number}/>
                         </div>
@@ -433,11 +434,11 @@ export function Result({needs_list, set_needs_list}) {
 
     let building_rows = Object.entries(building_list).map(([building, count]) => (
         <tr key={building}>
-            <td className="d-flex align-items-center text-nowrap">
-                <span className="ms-auto me-1">{building}</span>
+            <td style={{display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
+                <span style={{marginLeft: 'auto', marginRight: '4px'}}>{building}</span>
                 <ItemIcon item={building} tooltip={false}/>
             </td>
-            <td className="ps-2 text-nowrap">
+            <td style={{paddingLeft: '8px', whiteSpace: 'nowrap'}}>
               {'x '}
               <ValueWithDifference currentValue={count} previousValue={historyValues?.[1]?.buildingCounts?.[building]}/>
             </td>
@@ -452,12 +453,11 @@ export function Result({needs_list, set_needs_list}) {
     }
 
     let surplus_doms = Object.entries(lp_surplus_list).map(([item, quant]) =>
-        (<div key={item} className="text-nowrap"><ItemIcon item={item}/> x{quant.toFixed(fixed_num)}
-            <button className="ms-2 btn btn-outline-primary ssmall text-nowrap mineralize-btn"
+        (<div key={item} style={{whiteSpace: 'nowrap'}}><ItemIcon item={item}/> x{quant.toFixed(fixed_num)}
+            <mdui-button variant="text" style={{marginLeft: '8px', fontSize: '0.75em', padding: '0.1em 0.4em', whiteSpace: 'nowrap'}}
                     onClick={() => IncreaseCostWhenSurplus(item)}>
-                <div>避免</div>
-                <div>溢出</div>
-            </button>
+                <div>避免溢出</div>
+            </mdui-button>
         </div>));
 
     const isRawMaterial = (item) => {
@@ -500,11 +500,11 @@ export function Result({needs_list, set_needs_list}) {
         }
     }, [result_dict, energy_cost, miner_energy_cost, building_list]);
 
-    return <div className="my-3 d-flex gap-5">
+    return <div style={{margin: '16px 0', display: 'flex', gap: '40px'}}>
         {/* 结果表格 */}
-        <table className="table table-sm align-middle w-auto result-table">
+        <table className="result-table" style={{borderCollapse: 'collapse', width: 'auto', verticalAlign: 'middle'}}>
             <thead>
-            <tr className="text-center text-nowrap">
+            <tr style={{textAlign: 'center', whiteSpace: 'nowrap'}}>
                 <th width={60}>操作</th>
                 <th width={140}>物品</th>
                 <th width={130}>产能</th>
@@ -515,28 +515,28 @@ export function Result({needs_list, set_needs_list}) {
                 <th width={170}>工厂类型</th>
             </tr>
             </thead>
-            <tbody className="table-group-divider">
+            <tbody style={{borderTop: '1px solid var(--mdui-color-outline-variant)'}}>
             <NplRows/>
             {result_table_rows}
             </tbody>
         </table>
         {/* 结果右侧悬浮栏 */}
-        <div className="sticky-top mt-3 align-self-start d-flex flex-column gap-2">
+        <div style={{position: 'sticky', top: '0', marginTop: '16px', alignSelf: 'flex-start', display: 'flex', flexDirection: 'column', gap: '8px'}}>
 
             {mineralize_doms.length > 0 &&
-                <fieldset className="w-fit">
+                <fieldset style={{width: 'fit-content'}}>
                     <legend><small>原矿化列表</small></legend>
-                    <div className="d-flex flex-wrap align-items-center">
+                    <div style={{display: 'flex', flexWrap: 'wrap', alignItems: 'center'}}>
                         {mineralize_doms}
-                        <button className="ms-2 btn btn-sm btn-outline-danger text-nowrap"
+                        <mdui-button variant="outlined" style={{marginLeft: '8px', whiteSpace: 'nowrap', '--mdui-color-primary': 'var(--mdui-color-error)'}}
                                 onClick={clear_mineralize_list}>清空
-                        </button>
+                        </mdui-button>
                     </div>
                 </fieldset>
             }
 
             {surplus_doms.length > 0 &&
-                <fieldset className="w-fit">
+                <fieldset style={{width: 'fit-content'}}>
                     <legend><small>多余产物</small></legend>
                     {surplus_doms}
                 </fieldset>}
@@ -545,17 +545,17 @@ export function Result({needs_list, set_needs_list}) {
             {(() => {
                 const rawMaterials = Object.entries(result_dict).filter(([item]) => isRawMaterial(item));
                 return rawMaterials.length > 0 && (
-                    <fieldset className="w-fit">
+                    <fieldset style={{width: 'fit-content'}}>
                         <legend><small>原矿输入总需求</small></legend>
                         <table>
                             <tbody>
                                 {rawMaterials.map(([item, amount]) => (
                                     <tr key={item}>
-                                        <td className="d-flex align-items-center text-nowrap">
+                                        <td style={{display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
                                             <ItemIcon item={item} tooltip={false} size={24}/>
-                                            <small className="ms-1">{item}</small>
+                                            <small style={{marginLeft: '4px'}}>{item}</small>
                                         </td>
-                                        <td className="ps-2 text-nowrap">
+                                        <td style={{paddingLeft: '8px', whiteSpace: 'nowrap'}}>
                                             <small>
                                                 <ValueWithDifference
                                                     currentValue={amount}
@@ -575,14 +575,14 @@ export function Result({needs_list, set_needs_list}) {
 
             {building_rows.length > 0 &&
                 <>
-                    <fieldset className="w-fit">
+                    <fieldset style={{width: 'fit-content'}}>
                         <legend><small>建筑统计</small></legend>
                         <table>
                             <tbody>{building_rows}</tbody>
                         </table>
                     </fieldset>
-                    <span className="d-inline-flex gap-1 text-nowrap">
-                        <span className="me-1">预估电力</span>
+                    <span style={{display: 'inline-flex', gap: '4px', whiteSpace: 'nowrap'}}>
+                        <span style={{marginRight: '4px'}}>预估电力</span>
                         <span className="fast-tooltip" data-tooltip="不包含采集设备">
                             <ValueWithDifference
                                 currentValue={energy_cost}

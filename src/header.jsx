@@ -1,45 +1,55 @@
-import React from 'react';
-import {Nav, Navbar, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {FaInfoCircle, FaQq, FaReact} from 'react-icons/fa';
+import 'mdui/components/navigation-bar.js';
+import 'mdui/components/navigation-bar-item.js';
+import 'mdui/components/tooltip.js';
+import 'mdui/components/top-app-bar.js';
+import 'mdui/components/top-app-bar-title.js';
+import 'mdui/components/button.js';
+import 'mdui/components/button-icon.js';
 
 export function Header() {
     const version = import.meta.env.VITE_APP_VERSION;
-    const renderTooltip = (props) => (
-        <Tooltip id="qq-tooltip" {...props}>
-            联系作者QQ:653524123<br/>
-            加入QQ群反馈:816367922
-        </Tooltip>
-    );
     return (
-        <Navbar className="px-3 text-nowrap" bg="light" expand="lg">
-            <Navbar.Brand href="#" className="d-inline-flex align-items-baseline">
-                <FaReact className="me-2 align-self-center"/>
-                <span className="me-1">戴森球计划量化计算器</span>
-                <span className="text-muted ssmall">v{version}</span>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbarNav"/>
-            <Navbar.Collapse id="navbarNav">
-                <Nav>
-                    <Nav.Link href="https://github.com/DSPCalculator/dsp-calc">开源仓库</Nav.Link>
-                    <Nav.Link href="https://www.bilibili.com/read/readlist/rl630834" target="_blank">逻辑原理</Nav.Link>
-                    <Nav.Link href="https://space.bilibili.com/16051534">联系作者</Nav.Link>
-                </Nav>
-                <Nav>
-                    <OverlayTrigger
-                        placement="bottom"
-                        delay={{show: 250, hide: 400}}
-                        overlay={renderTooltip}
-                    >
-                        <Nav.Link href="#" className="d-flex align-items-center">
-                            <FaQq className="mr-1"/> QQ
-                        </Nav.Link>
-                    </OverlayTrigger>
-                </Nav>
-
-                <span className="navbar-text ms-auto small">
-                    <FaInfoCircle/> 若无法加载，尝试切换浏览器为Chrome/Edge
-                </span>
-            </Navbar.Collapse>
-        </Navbar>
+        <div className="header-container" style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '8px 16px',
+            backgroundColor: 'var(--mdui-color-surface-container)',
+            borderBottom: '1px solid var(--mdui-color-outline-variant)',
+            flexWrap: 'wrap',
+            gap: '8px'
+        }}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                <FaReact style={{fontSize: '24px', color: 'var(--mdui-color-primary)'}}/>
+                <span style={{fontWeight: 500, fontSize: '18px'}}>戴森球计划量化计算器</span>
+                <span style={{fontSize: '12px', color: 'var(--mdui-color-on-surface-variant)'}}>v{version}</span>
+            </div>
+            <nav style={{display: 'flex', gap: '8px', marginLeft: '16px', flexWrap: 'wrap'}}>
+                <mdui-button variant="text" href="https://github.com/DSPCalculator/dsp-calc" target="_blank">
+                    开源仓库
+                </mdui-button>
+                <mdui-button variant="text" href="https://www.bilibili.com/read/readlist/rl630834" target="_blank">
+                    逻辑原理
+                </mdui-button>
+                <mdui-button variant="text" href="https://space.bilibili.com/16051534" target="_blank">
+                    联系作者
+                </mdui-button>
+                <mdui-tooltip content="联系作者QQ:653524123&#10;加入QQ群反馈:816367922">
+                    <mdui-button variant="text">
+                        <FaQq style={{marginRight: '4px'}}/> QQ
+                    </mdui-button>
+                </mdui-tooltip>
+            </nav>
+            <span style={{
+                marginLeft: 'auto',
+                fontSize: '12px',
+                color: 'var(--mdui-color-on-surface-variant)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+            }}>
+                <FaInfoCircle/> 若无法加载，尝试切换浏览器为Chrome/Edge
+            </span>
+        </div>
     );
 }

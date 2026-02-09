@@ -6,6 +6,7 @@ import {ItemIcon} from './icon';
 import {ItemSelect} from './item_select.jsx';
 import {FactorySelect, ProModeSelect, ProNumSelect, RecipeSelect} from './result.jsx';
 import {AutoSizedInput} from './ui_components/auto_sized_input.jsx';
+import 'mdui/components/button.js';
 
 // { "目标物品": "氢", "建筑数量": 0, "配方id": 1, "增产点数": 0, "增产模式": 0, "建筑": 0 }
 
@@ -60,20 +61,20 @@ function NplRow({row, set_row, remove_row}) {
     let recipe = game_data.recipe_data[recipe_id];
     let selected_building = game_data.factory_data[recipe["设施"]][row["建筑"]];
     let output_num = get_output_num(item, recipe, row["建筑数量"] * selected_building["倍率"], row["增产模式"], row["增产点数"], selected_building["名称"]);
-    return <tr className="table-info">
-        <td><a className="btn btn-sm btn-outline-primary ssmall text-nowrap mineralize-btn"
-               onClick={remove_row}>删除</a></td>
+    return <tr style={{backgroundColor: 'rgba(var(--mdui-color-info-rgb, 13, 202, 240), 0.1)'}}>
+        <td><mdui-button variant="text" style={{fontSize: '0.75em', padding: '0.1em 0.4em', margin: '0 0.25em', whiteSpace: 'nowrap'}}
+               onClick={remove_row}>删除</mdui-button></td>
         <td>
             {/* 目标物品 */}
             <ItemSelect item={item} set_item={set_item}/>
         </td>
-        <td className="text-center">
+        <td style={{textAlign: 'center'}}>
             <span style={{lineHeight: "30px"}}>{output_num}</span>
         </td>
         <td>
-            <div className="d-flex align-items-center gap-3">
+            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
                 {/* 所选工厂种类 */}
-                <div className="ms-auto text-nowrap">
+                <div style={{marginLeft: 'auto', whiteSpace: 'nowrap'}}>
                     <ItemIcon item={selected_building["名称"]} size={30}/>
                 </div>
                 <span style={{margin: "-0.5em"}}>x</span>

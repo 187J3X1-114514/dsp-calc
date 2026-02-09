@@ -71,14 +71,6 @@
     height: fit-content;
 }
 
-.modal.fade .modal-dialog {
-    -webkit-transition: -webkit-transform 0.1s ease-out;
-    -moz-transition: -moz-transform 0.1s ease-out;
-    -ms-transition: -ms-transform 0.1s ease-out;
-    -o-transition: -o-transform 0.1s ease-out;
-    transition: transform 0.1s ease-out;
-}
-
 .cursor-pointer {
     cursor: pointer;
 }
@@ -90,14 +82,6 @@
 
 .ssmall {
     font-size: 0.8em;
-}
-
-.hover-bg-opacity-50:hover {
-    --bs-bg-opacity: 0.5;
-}
-
-.hover-bg-opacity-50 {
-    transition: 0.05s linear all;
 }
 
 .fast-tooltip {
@@ -115,14 +99,7 @@
     background-color: #333;
     color: white;
     padding: .15em .4em;
-}
-
-.border-between {
-    border-left: solid 1px;
-}
-
-.border-between:first-child {
-    border-left: none;
+    border-radius: 4px;
 }
 
 fieldset,
@@ -136,12 +113,6 @@ legend {
 
 .result-table tr td:first-child {
     padding-left: 0;
-}
-
-.mineralize-btn {
-    margin: 0 0.25em;
-    font-size: 0.75em;
-    padding: 0.1em 0.4em;
 }
 
 /* auto-sized input */
@@ -163,7 +134,7 @@ legend {
 .auto-sized-input > input {
     padding: 0;
     margin: 0;
-    border: 1px dashed var(--bs-border-color);
+    border: 1px dashed #888;
     border-radius: 5px;
 
     text-align: center;
@@ -183,11 +154,25 @@ legend {
 }
 
 .auto-sized-input > input.valid {
-    border-color: var(--bs-form-valid-border-color);
-    outline-color: var(--bs-form-valid-border-color);
+    border-color: #198754;
+    outline-color: #198754;
 }
 
 .auto-sized-input > input.invalid {
-    border-color: var(--bs-form-invalid-border-color);
-    outline-color: var(--bs-form-invalid-border-color);
+    border-color: #dc3545;
+    outline-color: #dc3545;
+}
+
+/* MDUI customizations */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--mdui-color-surface, #fff);
+    color: var(--mdui-color-on-surface, #1c1b1f);
+}
+
+/* Table styling */
+.table-secondary {
+    background-color: rgba(0, 0, 0, 0.05);
 }
