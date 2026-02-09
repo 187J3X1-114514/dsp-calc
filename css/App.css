@@ -134,7 +134,7 @@ legend {
 .auto-sized-input > input {
     padding: 0;
     margin: 0;
-    border: 1px dashed #888;
+    border: 1px dashed var(--mdui-color-outline, #888);
     border-radius: 5px;
 
     text-align: center;
@@ -154,13 +154,13 @@ legend {
 }
 
 .auto-sized-input > input.valid {
-    border-color: #198754;
-    outline-color: #198754;
+    border-color: var(--mdui-color-primary, #198754);
+    outline-color: var(--mdui-color-primary, #198754);
 }
 
 .auto-sized-input > input.invalid {
-    border-color: #dc3545;
-    outline-color: #dc3545;
+    border-color: var(--mdui-color-error, #dc3545);
+    outline-color: var(--mdui-color-error, #dc3545);
 }
 
 /* MDUI customizations */

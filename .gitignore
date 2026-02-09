@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .vite/
+
+# Build artifacts - icon sprites are generated during build
+icon/*.json
+icon/*.png
+public/icon/
