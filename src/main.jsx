@@ -4,8 +4,8 @@ import App from './App.jsx';
 import {Header} from './header.jsx';
 import {IconStyles} from './icon.jsx';
 
-import 'bootstrap/dist/js/bootstrap.min.js';
-import 'bootstrap/js/dist/dropdown.js';
+import 'mdui/mdui.css';
+import 'mdui';
 
 import '../css/styles.scss';
 // app-specific CSS

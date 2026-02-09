@@ -78,11 +78,6 @@ export default defineConfig(({mode}) => ({
     define: {
         'import.meta.env.VITE_APP_VERSION': JSON.stringify(require('./package.json').version),
     },
-    resolve: {
-        alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-        }
-    },
     plugins: [
         react(),
         ...get_sprite_plugins(mode),

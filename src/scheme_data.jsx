@@ -1,6 +1,10 @@
 import structuredClone from '@ungap/structured-clone';
 import {useContext, useEffect, useState} from 'react';
 import {GameInfoContext, GlobalStateContext, SchemeDataSetterContext} from './contexts.jsx';
+import 'mdui/components/button.js';
+import 'mdui/components/dropdown.js';
+import 'mdui/components/menu.js';
+import 'mdui/components/menu-item.js';
 
 const DEFAULT_SCHEME_DATA = {
     "item_recipe_choices": {"氢": 1},
@@ -128,30 +132,25 @@ export function SchemeStorage() {
     }
 
     let dd_load_list = Object.keys(all_scheme).map(scheme_name => (
-        <li key={scheme_name}>
-            <a className="dropdown-item cursor-pointer"
-               onClick={() => load(scheme_name)}>{scheme_name}</a>
-        </li>));
+        <mdui-menu-item key={scheme_name} onClick={() => load(scheme_name)}>{scheme_name}</mdui-menu-item>
+    ));
 
     let dd_delete_list = Object.keys(all_scheme).map(scheme_name => (
-        <li key={scheme_name}>
-            <a className="dropdown-item cursor-pointer"
-               onClick={() => delete_(scheme_name)}>{scheme_name}</a>
-        </li>));
+        <mdui-menu-item key={scheme_name} onClick={() => delete_(scheme_name)}>{scheme_name}</mdui-menu-item>
+    ));
 
-    return <div className="d-flex gap-2 align-items-center">
-
-        <div className="text-nowrap">生产策略</div>
-        <div className="input-group input-group-sm">
-            <button className="btn btn-outline-secondary" type="button" onClick={save}>保存</button>
-            <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">加载
-            </button>
-            <ul className="dropdown-menu">{dd_load_list}</ul>
-            <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">删除
-            </button>
-            <ul className="dropdown-menu">{dd_delete_list}</ul>
+    return <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+        <div style={{whiteSpace: 'nowrap'}}>生产策略</div>
+        <div style={{display: 'flex', gap: '4px'}}>
+            <mdui-button variant="outlined" onClick={save}>保存</mdui-button>
+            <mdui-dropdown>
+                <mdui-button slot="trigger" variant="outlined">加载</mdui-button>
+                <mdui-menu>{dd_load_list}</mdui-menu>
+            </mdui-dropdown>
+            <mdui-dropdown>
+                <mdui-button slot="trigger" variant="outlined">删除</mdui-button>
+                <mdui-menu>{dd_delete_list}</mdui-menu>
+            </mdui-dropdown>
         </div>
     </div>;
 }

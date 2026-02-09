@@ -25,7 +25,7 @@ export function Recipe({recipe}) {
             : count.toFixed(findNonZeroPosition(count) + 2);
         return <React.Fragment key={item}>
             <ItemIcon item={item} size={28}/>
-            <span className="me-1 ssmall align-self-end">{count_used}</span>
+            <span style={{marginRight: '4px', fontSize: '0.8em', alignSelf: 'flex-end'}}>{count_used}</span>
         </React.Fragment>;
     }
 
@@ -34,40 +34,50 @@ export function Recipe({recipe}) {
     //时间向上取整，因为工厂也是向上取整
     const time = Math.ceil(recipe["时间"] * 100) / 100;
 
-    return <span className="d-inline-flex">
+    return <span style={{display: 'inline-flex'}}>
         {input_doms.length > 0 && <>
             {input_doms}
-            <span className="me-1 position-relative"
-                  style={{fontSize: "32px", lineHeight: "20px"}}>
+            <span style={{marginRight: '4px', position: 'relative', fontSize: '32px', lineHeight: '20px'}}>
                 &#10230;
-                <span className="position-absolute text-center text-recipe-time"
-                      style={{left: 0, width: "100%", top: "50%", fontSize: "12px"}}>
+                <span className="text-recipe-time"
+                      style={{position: 'absolute', left: 0, width: '100%', top: '50%', fontSize: '12px', textAlign: 'center'}}>
                     {time}s
                 </span>
             </span>
         </>}
         {output_doms}
 
-        {input_doms.length === 0 && <small className="ms-1 align-self-end text-recipe-time">
+        {input_doms.length === 0 && <small className="text-recipe-time" style={{marginLeft: '4px', alignSelf: 'flex-end'}}>
             ({time}s)
         </small>}
     </span>;
 }
 
 export function HorizontalMultiButtonSelect({choice, options, onChange, no_gap, className}) {
-    let gap_class = no_gap ? "" : "gap-1";
-    let option_doms = options.map(({value, label, item_icon, className}) => {
-        let selected_class = choice == value ? "bg-selected" : "bg-unselected";
+    let gapStyle = no_gap ? {} : {gap: '4px'};
+    let option_doms = options.map(({value, label, item_icon, className: optClassName}) => {
+        let selected_style = choice == value 
+            ? {backgroundColor: '#60a363', color: 'white'} 
+            : {backgroundColor: '#AAA', color: 'white'};
         // insert 1px white border if [no_gap == true]
-        let gap_class = no_gap ? "border-between border-white" : "";
+        let borderStyle = no_gap ? {borderLeft: '1px solid white'} : {};
         return <div key={value}
-                    className={`py-1 px-1 text-nowrap d-flex align-items-center cursor-pointer small
-                ${selected_class} ${gap_class} ${className || ""}`}
+                    className={optClassName || ""}
+                    style={{
+                        padding: '4px', 
+                        whiteSpace: 'nowrap', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        cursor: 'pointer', 
+                        fontSize: '0.875em',
+                        ...selected_style, 
+                        ...borderStyle
+                    }}
                     onClick={() => onChange(value)}
         >{item_icon && <ItemIcon item={item_icon} size={32}/>}
-            {label && <span className="mx-1">{label}</span>}
+            {label && <span style={{margin: '0 4px'}}>{label}</span>}
         </div>;
     })
 
-    return <div className={`d-flex ${gap_class} ${className || ""}`}>{option_doms}</div>;
+    return <div className={className || ""} style={{display: 'flex', ...gapStyle}}>{option_doms}</div>;
 }

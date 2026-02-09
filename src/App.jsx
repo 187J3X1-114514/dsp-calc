@@ -20,7 +20,9 @@ import {
     TheyComeFromVoidGUID,
     vanilla_game_version
 } from "./GameData.jsx";
-import {Select} from "antd";
+import 'mdui/components/select.js';
+import 'mdui/components/menu-item.js';
+import 'mdui/components/button.js';
 
 function GameVersion({needs_list, set_needs_list}) {
     const mod_options = get_mod_options();
@@ -104,16 +106,24 @@ function GameVersion({needs_list, set_needs_list}) {
         }
     }
 
-    return <div className="d-flex gap-2 align-items-center">
-        <div className="text-nowrap">游戏版本 v{vanilla_game_version}</div>
-        <div className="text-nowrap">模组选择</div>
-        <Select style={{minWidth: 250}} mode={"multiple"} options={mod_options} value={mods} onChange={mods_change}/>
+    return <div style={{display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap'}}>
+        <div style={{whiteSpace: 'nowrap'}}>游戏版本 v{vanilla_game_version}</div>
+        <div style={{whiteSpace: 'nowrap'}}>模组选择</div>
+        <mdui-select multiple style={{minWidth: '250px'}} value={mods} 
+            onchange={(e) => {
+                const selectedMods = e.target.value || [];
+                mods_change(Array.isArray(selectedMods) ? selectedMods : []);
+            }}>
+            {mod_options.map(opt => (
+                <mdui-menu-item key={opt.value} value={opt.value}>{opt.label}</mdui-menu-item>
+            ))}
+        </mdui-select>
     </div>;
 }
 
 function UserSettings({show}) {
-    let class_show = show ? "" : "d-none";
-    return <div className={`d-flex gap-3 ${class_show}`}>
+    let displayStyle = show ? "flex" : "none";
+    return <div style={{display: displayStyle, gap: '16px'}}>
         <fieldset>
             <legend><small>设置</small></legend>
             <Settings/>
@@ -139,17 +149,19 @@ function AppWithContexts() {
 
     return <>
         {/*游戏版本、模组选择*/}
-        <div className="d-flex column-gap-4 row-gap-2 flex-wrap">
+        <div style={{display: 'flex', columnGap: '16px', rowGap: '8px', flexWrap: 'wrap'}}>
             <GameVersion needs_list={needs_list} set_needs_list={set_needs_list}/>
         </div>
         {/*生产策略、需求列表、清空数据缓存按钮、采矿参数&其他设置是否显示按钮*/}
-        <div className="d-flex column-gap-4 row-gap-2 flex-wrap">
+        <div style={{display: 'flex', columnGap: '16px', rowGap: '8px', flexWrap: 'wrap', marginTop: '8px'}}>
             <SchemeStorage/>
             <NeedsListStorage needs_list={needs_list} set_needs_list={set_needs_list}/>
-            <button className="btn btn-outline-danger btn-sm" onClick={clearData}>清空数据缓存</button>
-            <button className="btn btn-outline-primary btn-sm" onClick={() => set_misc_show(s => !s)}>
+            <mdui-button variant="outlined" onClick={clearData} style={{'--mdui-color-primary': 'var(--mdui-color-error)'}}>
+                清空数据缓存
+            </mdui-button>
+            <mdui-button variant="outlined" onClick={() => set_misc_show(s => !s)}>
                 采矿参数 & 其他设置
-            </button>
+            </mdui-button>
         </div>
         {/*采矿参数&其他设置*/}
         <UserSettings show={misc_show}/>
